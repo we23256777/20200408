@@ -1,0 +1,486 @@
+﻿1. 아래와 같이 가로방향의 구구단을 출력하되 아무키나 누르면 화면을 지우고 다음 단을 출력하는 프로그램을 작성하시오.
+
+
+1*1=1 1*2=2 1*3=3 1*4=4 1*5=5 1*6=6 1*7=7 1*8=8 1*9=9
+
+
+2*1=2 2*2=4 2*3=6 2*4=8 2*5=10 2*6=12 2*7=14 2*8=16 2*9=18
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+int main(void)
+{
+ int i, j;
+ for(j=1;j<=9;j++)
+ {
+  system("cls");
+  for(i=1;i<=9;i++)
+   printf("%d*%d=%d ", j, i, j*i);
+  printf("\n아무키나 누르시오.\n");
+  getch();
+  }
+ return 0;
+}
+
+
+
+2. 화살표 키를 눌러 숫자를 증가시키거나 감소시키는 프로그램을 작성하시오. 기본 숫자 1000에 대해 위쪽 방향 화살표 키를 입력하면 숫자를 증가시키고, 아래쪽 방향 화살표 키를 입력하면 숫자를 감소하게 합니다. 왼쪽 방향 화살표 키와 오른쪽 방향 화살표키는 감소하거나 증가시킬 단위를 조절하도록 합니다.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+
+void number_control(char key, int *nx, int *rx);
+
+int main(void)
+{
+	int n=1000;
+	int range=10;
+	char key;
+	do
+	{
+		system("cls");
+		printf("현재값 : %d,   증감값 : %d\n", n, range);
+		printf("화살표 키를 누르시오. 종료는 Esc키\n");
+		key=getch();
+		number_control(key, &n, &range);
+	}while(key!=27);
+	return 0;
+}
+
+
+void number_control(char key, int *nx, int *rx)
+{
+	switch(key)
+	{
+		case 72:  //위쪽(상) 방향의 화살표 키 입력
+			*nx=*nx+*rx;
+			break ;
+		case 75:  //왼쪽(좌) 방향의 화살표 키 입력
+			*rx=*rx-5;
+			break;
+		case 77:  //오른쪽(우) 방향의 화살표 키 입력
+			*rx=*rx+5;
+			break ;
+		case 80:  //아래쪽(하) 방향의 화살표 키 입력
+			*nx=*nx-*rx;
+			break ;
+		default:
+			return;
+	}
+}
+
+3. 다음과 같은 메뉴에 의해 실제 값을 입력받아 해당 연산을 처리하는 프로그램을 작성하시오.
+
+메인메뉴		서브메뉴
+1. 사칙연산		1.1 덧셈 연산		1.2 뺄셈 연산
+			1.3 나눗셈 연산		1.4 곱셈 연산
+			1.5 나머지 연산		1.6 메인 메뉴로 이동
+
+2. 로그 연산		2.1 자연로그 연산	2.2 상용로그 연산
+			2.3 메인 메뉴로 이동
+
+3. 종료
+
+
+
+#include <stdio.h>
+#include <math.h>
+#include <conio.h>
+#include <stdlib.h>
+
+int menu_display(void);
+int sub_menu_display01(void); //사칙연산 
+int sub_menu_display02(void); //로그 연산
+void sub_main01(void); //사칙연산 메뉴
+void sub_main02(void); //로그연산 메뉴
+
+void addition_calc(void);
+void subtraction_calc(void);
+void division_calc(void);
+void remainder_calc(void);
+void multiplication_calc(void);
+void common_log_calc(void);
+void natural_log_calc(void);
+
+
+void press_any_key(void);  //아무키나 누르면 이전 메뉴로 
+
+int main(void)
+{
+    int c;
+    while((c=menu_display())!=3)
+    {
+        switch(c)
+        {
+           case 1 : sub_main01();
+  	    	break ;
+           case 2 : sub_main02();
+  		break ;
+           default : break ;
+        }
+    }
+ return 0;
+}
+int menu_display(void)
+{
+    int select;
+    system("cls");
+    printf("계산 프로그램\n\n");
+    printf("1. 사칙연산\n");
+    printf("2. 로그연산\n");
+    printf("3. 프로그램 종료\n\n");
+    printf("메뉴번호 입력>");
+    select=getch()-48;
+    return select;
+}
+void sub_main01(void)
+{
+    int c;
+    while((c=sub_menu_display01())!= 6)
+    {
+      switch(c)
+      {
+           case 1 : addition_calc();
+  	 	     break ;
+           case 2 : subtraction_calc();
+  		     break ;
+           case 3 : division_calc();
+  		     break ;
+           case 4 : multiplication_calc();
+  		     break ;
+           case 5 : remainder_calc();
+  		     break ;
+           default : break ;
+     }
+   }
+}
+
+int sub_menu_display01(void)
+{
+    int select;
+    system("cls");
+    printf("사칙연산\n\n");
+    printf("1. 덧셈(+)연산\n");
+    printf("2. 뺄셈(-)연산\n");
+    printf("3. 나눗셈(/)연산\n");
+    printf("4. 곱셈(*)연산\n");
+    printf("5. 나머지(%%)연산\n");
+    printf("6. 메인 메뉴로 이동\n");
+    printf("메뉴번호 입력>");
+    select=getch()-48;
+    return select;
+}
+
+void addition_calc(void)
+{
+	double x, y;
+	system("cls");
+	printf("덧셈 연산 (x+y)\n\n");
+	printf("첫번째 숫자 x를 입력하고 Enter>");
+	scanf("%lf", &x);
+	printf("두번째 숫자 y를 입력하고 Enter>");
+	scanf("%lf", &y);
+	printf("덧셈결과 : %lf\n", x+y);
+	press_any_key();	
+}
+
+void subtraction_calc(void)
+{
+	double x, y;
+	system("cls");
+	printf("뺄셈 연산 (x-y)\n\n");
+	printf("첫번째 숫자 x를 입력하고 Enter>");
+	scanf("%lf", &x);
+	printf("두번째 숫자 y를 입력하고 Enter>");
+	scanf("%lf", &y);
+	printf("뺄셈결과 : %lf\n", x-y);
+	press_any_key();	
+}
+void division_calc(void)
+{
+	double x, y;
+	system("cls");
+	printf("나눗셈 연산 (x/y)\n\n");
+	printf("첫번째 숫자 x를 입력하고 Enter>");
+	scanf("%lf", &x);
+	printf("두번째 숫자 y를 입력하고 Enter>");
+	scanf("%lf", &y);
+	printf("나눗셈결과 : %lf\n", x/y);
+	press_any_key();	
+}
+void remainder_calc(void)
+{
+	double x, y;
+	system("cls");
+	printf("나머지 연산 (x%%y)\n\n");
+	printf("첫번째 숫자 x를 입력하고 Enter>");
+	scanf("%lf", &x);
+	printf("두번째 숫자 y를 입력하고 Enter>");
+	scanf("%lf", &y);
+	printf("나머지결과 : %lf\n", fmod(x,y));
+	press_any_key();	
+}
+void multiplication_calc(void)
+{
+	double x, y;
+	system("cls");
+	printf("곱셈 연산 (x*y)\n\n");
+	printf("첫번째 숫자 x를 입력하고 Enter>");
+	scanf("%lf", &x);
+	printf("두번째 숫자 y를 입력하고 Enter>");
+	scanf("%lf", &y);
+	printf("곱셈결과 : %lf\n", x*y);
+	press_any_key();	
+}
+
+
+void sub_main02(void)
+{
+    int c;
+    while((c=sub_menu_display02())!= 3)
+    {
+      switch(c)
+      {
+           case 1 : natural_log_calc();
+  	 	     break ;
+           case 2 : common_log_calc();
+  		     break ;
+           default : break ;
+     }
+   }
+}
+int sub_menu_display02(void)
+{
+        int select;
+        system("cls");
+        printf("로그 연산\n\n");
+        printf("1. 자연로그(log)연산 \n");
+        printf("2. 상용로그(log10)연산 \n");
+        printf("3. 메인 메뉴로 이동\n\n");
+        printf("메뉴번호 입력>");
+        select=getch()-48;
+        return select;
+}
+void common_log_calc(void)
+{
+	double x;
+	system("cls");
+	printf("상용로그 연산 log10(x)\\n\n");
+	printf("숫자 x를 입력하고 Enter>");
+	scanf("%lf", &x);
+	printf("로그결과 : %lf\n", log10(x));
+	press_any_key();	
+}
+void natural_log_calc(void)
+{
+	double x;
+	system("cls");
+	printf("자연로그 연산 log(x)\\n\n");
+	printf("숫자 x를 입력하고 Enter>");
+	scanf("%lf", &x);
+	printf("로그결과 : %lf\n", log(x));
+	press_any_key();	
+}
+
+void press_any_key(void)
+{
+       printf("\n\n");
+       printf("아무키나 누르면 이전 메뉴로...");
+       getch();
+}
+
+
+4. 함수 rand를 이용하여 1-6 사이의 주사위 눈금 1,000개를 생성하고, 각 눈금의 빈도수에 대한 확률을 계산하시오.
+
+
+#include <stdio.h>
+#include <math.h>
+#include <time.h>
+#include <stdlib.h>
+
+int main(void)
+{
+
+	int i, num, count[7]={0}, sum=0;
+	srand(time(NULL));
+
+	for(i=1;i<=1000;i++)
+	{
+		num=rand()%6+1;
+		count[num]+=1;
+	}
+
+	printf("number   count     prob.\n");
+	printf("---------------------------\n");
+	for(i=1;i<=6;i++)
+	{
+		printf("%d :     %4d   %7.3f\n", i, count[i], count[i]/1000.);
+		sum+=count[i];
+	}
+	printf("----------------------------\n");
+	printf("total : %6d\n", sum);
+	return 0;
+}
+
+
+
+5. 가변 인수를 사용하는 다음의 함수를 작성하시오.
+1) 인수들의 평균을 계산하는 함수 mean
+2) 인수들의 중위수를 계산하는 함수 median
+3) 인수들을 오름차순으로 정렬하는 함수 ascending_sort
+4) 인수로 사용된 여러 개의 문자열을 하나의 문자열로 합치는 함수 concatnate_str
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdarg.h>
+
+double sum(int count, ...);
+double mean(int count, ...);
+double median(int count, ...);
+void asending_sort(int count, ...);
+char *concatenate_str(int count, ...);
+
+int main(void) 
+{
+
+	printf("데이터 개수 : 5\n");
+	printf("데이터 : 10, 12, 30, 40, 50\n");
+	printf("합계   = %lf\n", sum(5, 10., 12., 30., 40., 50.));
+	printf("평균   = %lf\n", mean(5, 10., 12., 30., 40., 50.));
+	printf("중앙값 = %lf\n\n", median(5, 50., 12., 30., 40., 10.));
+	printf("데이터 개수 : 5\n");
+	printf("데이터 : 1.5, 6.7, 2.5, 3.8, 0.9\n");
+	printf("정렬   = ");
+	asending_sort(5, 1.5, 6.7, 2.5, 3.8, 0.9);
+	printf("\n");
+	printf("데이터 개수 : 5\n");
+	printf("데이터 : This , is , a , sample , test\n");
+	
+	printf("연결   = %s", concatenate_str(5, "This ", "is ", "a ", "sample ", "test."));
+	printf("\n");
+	return 0;
+}
+
+double sum(int count, ...)
+{
+   double total=0, number;
+   int i=0;
+   va_list ap;
+   va_start(ap, count);
+   while(i<count)
+   {
+		number=va_arg(ap, double);  //인수의 데이터 형은 double을 가정
+		total+=number;
+		i++;
+   }
+   va_end(ap);
+   return total;
+}
+
+double mean(int count, ...)
+{
+   double total=0, number;
+   int i=0;
+   va_list ap;
+   va_start(ap, count);
+   while(i<count)
+   {
+		number=va_arg(ap, double);  //인수의 데이터 형은 double을 가정
+		total+=number;
+		i++;
+   }
+   va_end(ap);
+   return total/count;
+}
+
+
+double median(int count, ...)
+{
+	double *num, temp;
+	int i=0, j;
+	num=(double *)malloc(count);
+	va_list ap;
+	va_start(ap, count);
+	while(i<count)
+	{
+			num[i]=va_arg(ap, double);  //인수의 데이터 형은 double을 가정
+			i++;
+	}
+	va_end(ap);
+	//중앙값을 계산하려면 데이터를 정렬해야 함.
+	for(i=0;i<count;i++)
+		for(j=0;j<count-i;j++)
+		{ 
+			if (num[j+1]<num[j])
+			{ 
+				temp=num[j];
+				num[j]=num[j+1];
+				num[j+1]=temp;
+			}
+		}
+	if (count/2==0)
+			return (num[count/2]+num[count/2+1])/2;
+	else
+			return num[(count+1)/2];
+}
+
+
+void asending_sort(int count, ...)
+{
+	double *num, temp;
+	int i=0, j;
+	num=(double *)malloc(count);
+	va_list ap;
+	va_start(ap, count);
+	while(i<count)
+	{
+			num[i]=va_arg(ap, double);  //인수의 데이터 형은 double을 가정
+			i++;
+	}
+	va_end(ap);
+	for(i=0;i<count-1;i++)
+		for(j=0;j<count-i-1;j++)
+		{ 
+			if (num[j+1]<num[j])
+			{ 
+				temp=num[j];
+				num[j]=num[j+1];
+				num[j+1]=temp;
+			}
+		}
+	for(i=0;i<count;i++)
+		printf("%.3lf  ",num[i]);
+	printf("\n");
+}
+
+char *concatenate_str(int count, ...)
+{
+	char *str, *result;
+	int i=0, length=0;
+	va_list ap;
+	va_start(ap, count);
+	while(i<count)
+	{
+			str=va_arg(ap, char*);  //인수의 데이터 형은 문자열을 가정
+			length=length+strlen(str);
+			i++;
+	}
+	va_end(ap);
+	result=(char *)malloc(length+1);
+	result[0]='\0';
+	i=0;
+	va_start(ap, count);
+	while(i<count)
+	{
+			str=va_arg(ap, char*);  //인수의 데이터 형은 문자열을 가정
+			strcat(result, str);
+			i++;
+	}
+	va_end(ap);
+	return result;
+}
+
